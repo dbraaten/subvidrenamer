@@ -39,6 +39,8 @@
 			this.buttonRename = new System.Windows.Forms.Button();
 			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
 			this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+			this.scrollLog = new System.Windows.Forms.TextBox();
+			this.checkRemoveFolders = new System.Windows.Forms.CheckBox();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
 			this.splitContainer1.Panel1.SuspendLayout();
 			this.splitContainer1.Panel2.SuspendLayout();
@@ -68,7 +70,7 @@
 			this.listBoxFinal.FormattingEnabled = true;
 			this.listBoxFinal.Location = new System.Drawing.Point(447, 3);
 			this.listBoxFinal.Name = "listBoxFinal";
-			this.listBoxFinal.Size = new System.Drawing.Size(438, 388);
+			this.listBoxFinal.Size = new System.Drawing.Size(438, 310);
 			this.listBoxFinal.TabIndex = 2;
 			// 
 			// checkSetNames
@@ -88,7 +90,7 @@
 			this.listBoxSource.FormattingEnabled = true;
 			this.listBoxSource.Location = new System.Drawing.Point(3, 3);
 			this.listBoxSource.Name = "listBoxSource";
-			this.listBoxSource.Size = new System.Drawing.Size(438, 388);
+			this.listBoxSource.Size = new System.Drawing.Size(438, 310);
 			this.listBoxSource.TabIndex = 4;
 			// 
 			// label1
@@ -138,6 +140,7 @@
 			// 
 			// splitContainer1.Panel1
 			// 
+			this.splitContainer1.Panel1.Controls.Add(this.checkRemoveFolders);
 			this.splitContainer1.Panel1.Controls.Add(this.textFolder);
 			this.splitContainer1.Panel1.Controls.Add(this.buttonRename);
 			this.splitContainer1.Panel1.Controls.Add(this.textExtensions);
@@ -149,8 +152,8 @@
 			// splitContainer1.Panel2
 			// 
 			this.splitContainer1.Panel2.Controls.Add(this.tableLayoutPanel1);
-			this.splitContainer1.Size = new System.Drawing.Size(888, 512);
-			this.splitContainer1.SplitterDistance = 114;
+			this.splitContainer1.Size = new System.Drawing.Size(888, 520);
+			this.splitContainer1.SplitterDistance = 115;
 			this.splitContainer1.TabIndex = 9;
 			// 
 			// tableLayoutPanel1
@@ -160,23 +163,44 @@
 			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
 			this.tableLayoutPanel1.Controls.Add(this.listBoxFinal, 1, 0);
 			this.tableLayoutPanel1.Controls.Add(this.listBoxSource, 0, 0);
+			this.tableLayoutPanel1.Controls.Add(this.scrollLog, 0, 1);
 			this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
 			this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-			this.tableLayoutPanel1.RowCount = 1;
+			this.tableLayoutPanel1.RowCount = 2;
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-			this.tableLayoutPanel1.Size = new System.Drawing.Size(888, 394);
+			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 85F));
+			this.tableLayoutPanel1.Size = new System.Drawing.Size(888, 401);
 			this.tableLayoutPanel1.TabIndex = 0;
+			// 
+			// scrollLog
+			// 
+			this.tableLayoutPanel1.SetColumnSpan(this.scrollLog, 2);
+			this.scrollLog.Location = new System.Drawing.Point(3, 319);
+			this.scrollLog.Multiline = true;
+			this.scrollLog.Name = "scrollLog";
+			this.scrollLog.Size = new System.Drawing.Size(882, 78);
+			this.scrollLog.TabIndex = 5;
+			// 
+			// checkRemoveFolders
+			// 
+			this.checkRemoveFolders.AutoSize = true;
+			this.checkRemoveFolders.Location = new System.Drawing.Point(449, 84);
+			this.checkRemoveFolders.Name = "checkRemoveFolders";
+			this.checkRemoveFolders.Size = new System.Drawing.Size(222, 17);
+			this.checkRemoveFolders.TabIndex = 9;
+			this.checkRemoveFolders.Text = "Remove folder after Rename (to Recycle)";
+			this.checkRemoveFolders.UseVisualStyleBackColor = true;
+			this.checkRemoveFolders.CheckedChanged += new System.EventHandler(this.OnCheckedRemoveFolder);
 			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(888, 512);
+			this.ClientSize = new System.Drawing.Size(888, 520);
 			this.Controls.Add(this.splitContainer1);
 			this.Name = "MainForm";
-			this.Text = "DigiBee Renamer";
+			this.Text = "SubVid Renamer";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.OnClosing);
 			this.Load += new System.EventHandler(this.OnLoad);
 			this.splitContainer1.Panel1.ResumeLayout(false);
@@ -185,6 +209,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
 			this.splitContainer1.ResumeLayout(false);
 			this.tableLayoutPanel1.ResumeLayout(false);
+			this.tableLayoutPanel1.PerformLayout();
 			this.ResumeLayout(false);
 
 		}
@@ -202,6 +227,8 @@
 		private System.Windows.Forms.Button buttonRename;
 		private System.Windows.Forms.SplitContainer splitContainer1;
 		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+		private System.Windows.Forms.TextBox scrollLog;
+		private System.Windows.Forms.CheckBox checkRemoveFolders;
 	}
 }
 

@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using Microsoft.Win32;
 using System.IO;
+using Shell32;
 
 /// <summary>
 /// A simple utility to help with renaming files that exist in folders that have more correct names than
@@ -20,6 +18,9 @@ namespace SubVidRenamer
 		private static string SVRregPath = @"Software\DigiBee\Renamer";
 		private List<string> sourcePaths;
 		private List<string> destPaths;
+		public static Shell shell = new Shell();
+		public static Folder RecyclingBin = shell.NameSpace(10);
+
 		public MainForm()
 		{
 			InitializeComponent();
@@ -54,6 +55,12 @@ namespace SubVidRenamer
 					else
 					{
 						textExtensions.Text = "mp4;mkv;avi";
+					}
+
+					int? removeFolder = ak.GetValue("Remove") as int?;
+					if (removeFolder != null)
+					{
+						checkSetNames.Checked = removeFolder != 0;
 					}
 				}
 			}
@@ -181,6 +188,7 @@ namespace SubVidRenamer
 						key.SetValue("LastFolder", textFolder.Text);
 						key.SetValue("Extensions", textExtensions.Text);
 						key.SetValue("Set", checkSetNames.Checked, RegistryValueKind.DWord);
+						key.SetValue("Remove", checkRemoveFolders.Checked, RegistryValueKind.DWord);
 					}
 					catch (Exception ex)
 					{
@@ -194,7 +202,7 @@ namespace SubVidRenamer
 			}
 		}
 
-		private void OnFolderChanged(object sender, EventArgs e)
+		private void Rescan()
 		{
 			if (textFolder.Text.Count() > 0 && textExtensions.Text.Count() > 0)
 			{
@@ -202,12 +210,35 @@ namespace SubVidRenamer
 			}
 		}
 
+		private void OnFolderChanged(object sender, EventArgs e)
+		{
+			Rescan();
+		}
+
 		private void OnExtensionsChanged(object sender, EventArgs e)
 		{
-			if (textFolder.Text.Count() > 0 && textExtensions.Text.Count() > 0)
-			{
-				ScanFolder();
-			}
+			Rescan();
+		}
+
+		private void logFileMove( String src, String dst)
+		{
+			StringBuilder sl = new StringBuilder();
+			sl.Append(scrollLog.Text);
+			sl.Append(src);
+			sl.Append(" --> ");
+			sl.AppendLine(dst);
+			scrollLog.Text = sl.ToString();
+			scrollLog.SelectionStart = scrollLog.Text.Length;
+			scrollLog.ScrollToCaret();
+		}
+
+		private void logLine( String line )
+		{
+			StringBuilder sl = new StringBuilder();
+			sl.AppendLine(line);
+			scrollLog.Text = sl.ToString();
+			scrollLog.SelectionStart = scrollLog.Text.Length;
+			scrollLog.ScrollToCaret();
 		}
 
 		private void OnClickedRename(object sender, EventArgs e)
@@ -220,12 +251,20 @@ namespace SubVidRenamer
 				try
 				{
 					File.Move(sourcePaths[i], destPaths[i]);
+					logFileMove(sourcePaths[i], destPaths[i]);
+
+					if (checkRemoveFolders.Checked)
+					{
+						string subPath = Path.GetDirectoryName(sourcePaths[i]);
+						RecyclingBin.MoveHere(subPath);
+					}
 				}
 				catch (Exception ex)
 				{
 					sourcePaths[i] = ex.Message;
 				}
 			}
+			Rescan();
 		}
 
 		private void OnClickedBrowse(object sender, EventArgs e)
@@ -251,6 +290,12 @@ namespace SubVidRenamer
 				else
 					ProcessSourcePaths();
 			}
+		}
+
+		private void OnCheckedRemoveFolder(object sender, EventArgs e)
+		{
+			logLine("Toggled Remove Folder setting");
+
 		}
 	}
 }
